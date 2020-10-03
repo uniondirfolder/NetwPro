@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gl_004_async_server_v2", "g
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gl_005_test_udp", "gl_005_test_udp\gl_005_test_udp.csproj", "{E109550D-50F7-4AC9-97F7-7FD19CCFCCA8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gl_005_test_udp_async", "gl_005_test_udp_async\gl_005_test_udp_async.csproj", "{5B7D333A-7B7B-464E-9B04-EC6D655921D7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{E109550D-50F7-4AC9-97F7-7FD19CCFCCA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E109550D-50F7-4AC9-97F7-7FD19CCFCCA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E109550D-50F7-4AC9-97F7-7FD19CCFCCA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B7D333A-7B7B-464E-9B04-EC6D655921D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B7D333A-7B7B-464E-9B04-EC6D655921D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B7D333A-7B7B-464E-9B04-EC6D655921D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B7D333A-7B7B-464E-9B04-EC6D655921D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +70,7 @@ Global
 		{A73E4EA6-7EBC-4A0D-BD70-31340FA1A12B} = {7213053E-0FE3-4758-A397-AB3D86EC9FD2}
 		{4BAA9B27-24D0-4A73-9374-2EF0DD5908C2} = {7213053E-0FE3-4758-A397-AB3D86EC9FD2}
 		{E109550D-50F7-4AC9-97F7-7FD19CCFCCA8} = {7213053E-0FE3-4758-A397-AB3D86EC9FD2}
+		{5B7D333A-7B7B-464E-9B04-EC6D655921D7} = {7213053E-0FE3-4758-A397-AB3D86EC9FD2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D7961825-2C47-4E24-ACAB-93FE5A3A1BFA}
