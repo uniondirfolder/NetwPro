@@ -11,11 +11,11 @@ namespace ht_0201_ping_v2
         static void Main(string[] args)
         {
             Console.Title = "0201 ping 192.168.43.0/24";
-            int count = 102;
-            string ipBase = "192.168.115.";
+            int count = 25;
+            string ipBase = "192.168.43.";
             if (!File.Exists(Directory.GetCurrentDirectory() + @"\ping.txt")) { File.CreateText(Directory.GetCurrentDirectory() + @"\ping.txt"); }
             else { File.WriteAllText(Directory.GetCurrentDirectory() + @"\ping.txt", ""); }
-            while (count!=100)
+            while (count!=0)
             {
                 count--;
                 string ip = ipBase + count.ToString();
