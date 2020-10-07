@@ -85,6 +85,8 @@ namespace gl_005_test_udp_async
             socket.Close();
             socket = null;
             tb_main.Text = "";
+
+            
         }
 
         private void btn_clear_Click(object sender, EventArgs e)
