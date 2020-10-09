@@ -53,17 +53,26 @@ namespace ht_0102_clock_server
             string msg = Encoding.ASCII.GetString(_buff, 0, count);
 
             Console.WriteLine("Message from client {0}: {1} ", c.RemoteEndPoint, msg);
+            DateTime temp = DateTime.Now;
 
             if (msg == "time")
             {
+                glMsg = "time";
+                c.Send(Encoding.ASCII.GetBytes(temp.ToLongTimeString()));
+
                 // return time
             }
             else if (msg == "date")
             {
+                glMsg = "date";
+                c.Send(Encoding.ASCII.GetBytes(temp.ToLongDateString()));
+
                 // return date
             }
             else
             {
+                glMsg = "NaN";
+                c.Send(Encoding.ASCII.GetBytes("NaN"));
                 // error
             }
         }
@@ -73,7 +82,12 @@ namespace ht_0102_clock_server
             {
                 _socket.Bind(_endPoint);
                 _socket.Listen(10);
-                _socket.BeginAccept(new AsyncCallback(Accept), _socket);
+
+                Console.WriteLine("Server Clock Start");
+
+                _socket.BeginAccept(new AsyncCallback(AcceptCallback), _socket);
+
+                Console.ReadKey();
             }
             catch (Exception e)
             {
@@ -93,6 +107,8 @@ namespace ht_0102_clock_server
             {
                 InitServer();
             }
+
+            StartServer();
 
             if (_socket.Connected)
             {
