@@ -25,7 +25,7 @@ namespace gl_005_test_udp_async
         Socket socket;
         IAsyncResult RcptRes, SendRes;
 
-        EndPoint ClientEP = new IPEndPoint(IPAddress.Any, 100);
+        EndPoint ClientEP = new IPEndPoint(IPAddress.Any, 53);
         public MainF()
         {
             InitializeComponent();
@@ -39,7 +39,7 @@ namespace gl_005_test_udp_async
         {
             if (socket != null) return;
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.IP);
-            socket.Bind(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 100));
+            socket.Bind(new IPEndPoint(IPAddress.Parse("188.191.237.208"), 53));
 
             state.workSocket = socket;
             RcptRes = socket.BeginReceiveFrom(
@@ -103,7 +103,7 @@ namespace gl_005_test_udp_async
                 0, 
                 buffer.Count(),
                 SocketFlags.None,
-                (EndPoint)new IPEndPoint(IPAddress.Parse("127.0.0.1"), 100),
+                (EndPoint)new IPEndPoint(IPAddress.Parse("188.191.237.208"), 53),
                 new AsyncCallback(Send_Completed),
                 socket);
         }

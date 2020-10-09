@@ -30,8 +30,7 @@ namespace ht_0201_ping_v2
                 else
                 {
                     Console.WriteLine(ip + " no information");
-                    File.WriteAllText(Directory.GetCurrentDirectory() + @"\ping.txt", $"{ip}  no information\r\n");
-                    
+                    File.WriteAllText(Directory.GetCurrentDirectory() + @"\ping.txt", $"{ip}  no information\r\n");                  
                 }
             }
 

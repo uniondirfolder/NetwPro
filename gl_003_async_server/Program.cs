@@ -12,7 +12,7 @@ namespace gl_003_async_server
     {
         static void Main(string[] args)
         {
-            Server s = new Server("127.0.0.1", 1024);
+            Server s = new Server("192.168.115.100", 10001);
             s.Start();
             Console.Read();
             s.Stop();

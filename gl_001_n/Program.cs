@@ -14,7 +14,7 @@ namespace gl_001_n
         {
 
             //IPAddress ip = IPAddress.Parse("207.46.197.32"); -bad
-            IPAddress ip = Dns.GetHostAddresses("microsoft.com")[0];
+            IPAddress ip = Dns.GetHostAddresses("www.microcoft.com")[0];
             IPEndPoint ep = new IPEndPoint(ip, 80);
             Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
 
