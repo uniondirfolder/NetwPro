@@ -10,7 +10,7 @@ namespace ht_0102_clock_server
 {
     internal class ClockServer
     {
-        private static Socket _socket = new Socket(AddressFamily.InterNetwork,SocketType.Stream, ProtocolType.IP);
+        private static readonly Socket _socket = new Socket(AddressFamily.InterNetwork,SocketType.Stream, ProtocolType.IP);
         private static IPEndPoint _endPoint = default(IPEndPoint);
         private static byte[] _buff;
 
@@ -39,41 +39,36 @@ namespace ht_0102_clock_server
         {
             Socket s = ar.AsyncState as Socket;
             Socket client = s.EndAccept(ar);
-            Console.WriteLine("Listen for {0}", client.RemoteEndPoint);
+            Console.WriteLine($"Listen for {client.RemoteEndPoint}");
 
             client.BeginReceive(_buff, 0, _buff.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback),client);
 
             _socket.BeginAccept(new AsyncCallback(AcceptCallback), s);
         }
-
         private static void ReceiveCallback(IAsyncResult ar)
         {
-            Socket c = ar.AsyncState as Socket;
-            int count = c.EndReceive(ar);
-            string msg = Encoding.ASCII.GetString(_buff, 0, count);
-
-            Console.WriteLine("Message from client {0}: {1} ", c.RemoteEndPoint, msg);
-            DateTime temp = DateTime.Now;
-
-            if (msg == "time")
+            if (ar.AsyncState is Socket socket)
             {
-                glMsg = "time";
-                c.Send(Encoding.ASCII.GetBytes(temp.ToLongTimeString()));
+                int count = socket.EndReceive(ar);
+                string msg = Encoding.ASCII.GetString(_buff, 0, count);
 
-                // return time
-            }
-            else if (msg == "date")
-            {
-                glMsg = "date";
-                c.Send(Encoding.ASCII.GetBytes(temp.ToLongDateString()));
+                Console.WriteLine($"Message from client {socket.RemoteEndPoint} -> give me {msg}");
+                DateTime temp = DateTime.Now;
 
-                // return date
-            }
-            else
-            {
-                glMsg = "NaN";
-                c.Send(Encoding.ASCII.GetBytes("NaN"));
-                // error
+                if (msg == "time")
+                {
+                    socket.Send(Encoding.UTF8.GetBytes(temp.ToLongTimeString()));
+
+                    // return time
+                }
+                else if (msg == "date")
+                {
+                    socket.Send(Encoding.UTF8.GetBytes(temp.ToLongDateString()));
+                }
+                else
+                {
+                    socket.Send(Encoding.ASCII.GetBytes("NaN"));
+                }
             }
         }
         private static void StartServer()
@@ -98,6 +93,7 @@ namespace ht_0102_clock_server
         }
         static void Main(string[] args)
         {
+            Console.Title = "SERVER TIME-DATE GET";
             if (args.Length > 1)
             {
                 int.TryParse(args[1], out var temp);
