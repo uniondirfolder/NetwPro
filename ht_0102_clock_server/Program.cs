@@ -13,7 +13,6 @@ namespace ht_0102_clock_server
         private static readonly Socket _socket = new Socket(AddressFamily.InterNetwork,SocketType.Stream, ProtocolType.IP);
         private static IPEndPoint _endPoint = default(IPEndPoint);
         private static byte[] _buff;
-
         private static void InitServer(string ipAddress = "default", int port = 55555)
         {
             if (ipAddress == "default" && port >= 0 && port <= 65535)
