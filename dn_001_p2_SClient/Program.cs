@@ -12,10 +12,12 @@ namespace dn_001_p2_SClient
     {
         static void Main(string[] args)
         {
-            string host = "itstep.dp.ua";
-            IPAddress ip = Dns.GetHostAddresses(host).First();
+            //string host = "itstep.dp.ua";
+            //IPAddress ip = Dns.GetHostAddresses(host).First();
             //Console.WriteLine(ip);
-            IPEndPoint ep = new IPEndPoint(ip,80);
+            //IPEndPoint ep = new IPEndPoint(ip, 80);
+            IPEndPoint ep = new IPEndPoint(IPAddress.Parse("127.0.0.1"),10000);
+            
 
             Socket s = new Socket(AddressFamily.InterNetwork,SocketType.Stream,ProtocolType.IP);
 
@@ -27,7 +29,9 @@ namespace dn_001_p2_SClient
                     Console.WriteLine("Connected");
 
                     //Request page
-                    string msg = string.Format("GET / HTTP/1.1\r\nHost: {0}\r\n\r\n", host);
+                    //string msg = string.Format("GET / HTTP/1.1\r\nHost: {0}\r\n\r\n", host);
+                    Console.WriteLine("Type message: ");
+                    string msg = Console.ReadLine();
                     byte[] buff = Encoding.ASCII.GetBytes(msg);
                     s.Send(buff);
 
@@ -37,10 +41,12 @@ namespace dn_001_p2_SClient
                     do
                     {
                         count = s.Receive(buff);
-                        Console.WriteLine(Encoding.UTF8.GetString(buff,0,count));
+                        Console.WriteLine(Encoding.UTF8.GetString(buff, 0, count));
 
-                    } while (count>0);
+                    } while (count > 0);
+
                 }
+
             }
             catch(Exception ex)
             {
