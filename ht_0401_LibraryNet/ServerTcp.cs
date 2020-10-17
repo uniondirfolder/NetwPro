@@ -15,176 +15,99 @@ using System.Windows.Forms;
 
 namespace ht_0401_LibraryNet
 {
-    public class LocalMsg
+    public class NetwMsg
     {
-        public bool haveMsg { get; set; } = false;
-        public string msg { get; set; } = "NaN";
-
-    }
-
-    public class MadText
-    {
-        public List<string> Text { get; set; }
-
-        public MadText(string textFile)
-        {
-            try
-            {
-               Text=new List<string>();
-               using (var file = File.OpenText(textFile))
-               {
-                   while (!file.EndOfStream)
-                   {
-                       var str = file.ReadLine();
-                       if (!string.IsNullOrEmpty(str) && !string.IsNullOrWhiteSpace(str))
-                       {
-                           Text.Add(str);
-                       }
-                   }
-               }
-            }
-            catch (Exception e)
-            {
-                Debug.Print(e.Message);
-            }
-        }
-    }
-
-    public enum MsgType
-    {
-        CmdRun,
-        CmdStop,
-        CmdOther
-    }
-
-    public class Client
-    {
-        public int ClientGuid { get; }= new Guid().GetHashCode();
-        public string Name { get; set; } = "anonymous";
-
-        public Client()
-        {
-            
-        }
-
-        public Client(string name)
-        {
-            this.Name = name;
-        }
-    }
-
-    [Serializable]
-    public class Msg
-    {
-        public string Name { get; set; }
-        public string Guid { get; set; }
-        public MsgType MsgType { get; set; }
+        public IPEndPoint IpEndPoint { get; set; }
         public string Body { get; set; }
-
         public override string ToString()
         {
-            //return $"ID: {Guid} | Client: {Name} | MT: {MsgType} | MSG: {Body}";
-            return $"{Name} > MT: {MsgType} | MSG: {Body}";
+            return $"{IpEndPoint.Address}+{IpEndPoint.Port}+{Body}";
+        }
+
+        public NetwMsg(IPEndPoint ipEndPoint, string body)
+        {
+            this.Body = body;
+            this.IpEndPoint = new IPEndPoint(ipEndPoint.Address,ipEndPoint.Port);
+        }
+        public NetwMsg(string netwMsg)
+        {
+            string[] buff = netwMsg.Split('+');
+            if (buff.Length == 3)
+            {
+                this.IpEndPoint = new IPEndPoint(IPAddress.Parse(buff[0]), int.Parse(buff[1]));
+                this.Body = buff[2];
+            }
         }
     }
-
-
-    public class ServerTcp
+    public class TcpSocket : IDisposable
     {
-        private Client Id = new Client("Server");
-        private TcpListener server = null;
-        private IPAddress ipAddress;
-        private int port;
-        
+        public Socket Listener { get; set; }
+        public Socket Request { get; set; }
+        public IPEndPoint RemoteIpEndPoint { get; set; }
+        public IPEndPoint LocalEndPoint { get; set; }
 
-        private ListBox lbMonitor;
-        private MadText madText;
-        private bool console = true;
-        private bool run = true;
-        public LocalMsg localMsg;
-
-        public ServerTcp(IPAddress ipAddress, int port, LocalMsg localMsg)
-        {
-            this.ipAddress = ipAddress;
-            this.port = port;
-            this.localMsg = localMsg;
-            madText = new MadText(Directory.GetCurrentDirectory() + @"\exceptionLog.txt");
-        }
-
-        public void Start(ListBox monitor=null)
+        byte[] buff = new byte[1024];
+        public TcpSocket(IPAddress remoteIpEndPoint, int remotePort)
         {
             try
             {
-                this.server = new TcpListener(ipAddress,port);
-                this.server.Start();
-                localMsg.msg = "Start" + DateTime.Now.ToString();
-                localMsg.haveMsg = true;
-                while (run)
-                {
-                    TcpClient client = server.AcceptTcpClient();
-
-                    NetworkStream networkStream = client.GetStream();
-
-                    BinaryFormatter formatter = new BinaryFormatter();
-                    Msg request = (Msg)formatter.Deserialize(networkStream);
-                    localMsg.msg = request.ToString();
-                    localMsg.haveMsg = true;
-
-                    Msg answer = new Msg();
-
-                    switch (request.MsgType)
-                    {
-                        case MsgType.CmdRun:
-                            break;
-                        case MsgType.CmdStop:
-                            Stop();
-                            break;
-                        case MsgType.CmdOther:
-                            Random rnd = new Random();
-                            var indx = rnd.Next(madText.Text.Count);
-                            answer.Name = Id.Name;
-                            answer.Guid = Id.ClientGuid.ToString();
-                            answer.MsgType = MsgType.CmdOther;
-                            answer.Body = madText.Text[indx];
-                            //Print(answer.ToString());
-                            localMsg.msg = answer.ToString();
-                            localMsg.haveMsg = true;
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-
-                    formatter.Serialize(networkStream, answer);
-                }
-                
+                Listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
+                Request = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
+                RemoteIpEndPoint = new IPEndPoint(remoteIpEndPoint, remotePort+1);
+                LocalEndPoint = new IPEndPoint(IPAddress.Loopback, RemoteIpEndPoint.Port);
+                //Listener.Bind(LocalEndPoint);
+                //Listener.Listen(10);
+               // Request.Connect(RemoteIpEndPoint);
             }
             catch (Exception e)
             {
-                File.AppendAllText(Directory.GetCurrentDirectory() + @"\temptext.txt", DateTime.Now.ToString(CultureInfo.InvariantCulture) + e.Message);
+                Debug.WriteLine(e.Message);
+                throw new SocketException(0000);
             }
 
-            
         }
 
-        public void Stop()
+        public void MakeNewConnect()
         {
-            run = false;
+            Request = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
+            Request.Connect(RemoteIpEndPoint);
         }
 
-      
-        public void Print(string str)
+        public void Start()
         {
-            if (console)
-            {
-                Console.WriteLine(str);
-            }
-            else
-            {
-                lbMonitor.Items.Add(str);
+            Listener.Bind(RemoteIpEndPoint);
+            Listener.Listen(10);
+            Listener.BeginAccept(new AsyncCallback(AcceptCallback), Listener);
+            Request.Connect(RemoteIpEndPoint);
+        }
 
-            }
+        private void AcceptCallback(IAsyncResult ar)
+        {
+            Socket s = ar.AsyncState as Socket;
+            Socket client = s.EndAccept(ar);
+            //Console.WriteLine("Listen for {0} ", client.RemoteEndPoint);
+
+            buff = Encoding.UTF8.GetBytes("555");
+
+            client.BeginReceive(buff, 0, buff.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), client);
+
+            Listener.BeginAccept(new AsyncCallback(AcceptCallback), Listener);
+        }
+
+        private void ReceiveCallBack(IAsyncResult ar)
+        {
+            Socket c = ar.AsyncState as Socket;
+            int count = c.EndReceive(ar);
+            string msg = Encoding.ASCII.GetString(buff, 0, count);
+
+            //Console.WriteLine("Msg from client {0}: {1}", c.RemoteEndPoint, msg);
+
+        }
+
+        public void Dispose()
+        {
+            Listener?.Dispose();
+            Request?.Dispose();
         }
     }
-
-
 }

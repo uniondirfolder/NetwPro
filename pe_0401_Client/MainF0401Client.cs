@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
@@ -15,12 +16,11 @@ namespace pe_0401_Client
 {
     public partial class MainF0401Client : Form
     {
-        private Client Id = new Client("client");
-        private TcpClient client;
-        private NetworkStream stream;
+        public TcpSocket ClientTcp = null;
         public MainF0401Client()
         {
             InitializeComponent();
+            LockUnlockControls(false);
 
         }
 
@@ -28,25 +28,22 @@ namespace pe_0401_Client
         {
             try
             {
-                client = new TcpClient();
-                client.Connect(tb_ip.Text, int.Parse(tb_port.Text));
-                stream = client.GetStream();
 
-                btn_Start.Enabled = false;
-                btn_Stop.Enabled = true;
-
-                BinaryFormatter formatter = new BinaryFormatter();
-                Msg request = new Msg
+                if (ClientTcp == null)
                 {
-                    Name = Id.Name,
-                    Guid = Id.ClientGuid.ToString(),
-                    MsgType = MsgType.CmdOther,
-                    Body = "start connect"
-                };
-                formatter.Serialize(stream, request);
-                Msg answer = (Msg)formatter.Deserialize(stream);
-                lb_Monitor.Items.Add(answer.ToString());
+                    ClientTcp = new TcpSocket(IPAddress.Parse(tb_ip.Text), Int32.Parse(tb_port.Text));
+                    ClientTcp.Start();
+                }
 
+                if (ClientTcp.Request == null)
+                {
+                    ClientTcp.MakeNewConnect();
+                }
+
+                if (ClientTcp.Request.Connected)
+                {
+                    LockUnlockControls(true);
+                }
             }
             catch (Exception exception)
             {
@@ -58,11 +55,9 @@ namespace pe_0401_Client
         {
             try
             {
-                stream.Close();
-                client.Close();
-                btn_Start.Enabled = true;
-                btn_Stop.Enabled = false;
-
+                LockUnlockControls(false);
+                ClientTcp.Request.Close();
+                ClientTcp.Request = null;
             }
             catch (Exception exception)
             {
@@ -74,39 +69,19 @@ namespace pe_0401_Client
         {
             try
             {
-               
+                NetwMsg nm = new NetwMsg(ClientTcp.LocalEndPoint,tb_Send.Text);
+                byte[] buff = Encoding.UTF8.GetBytes(nm.ToString());
 
-                Msg request = new Msg
+                ClientTcp.Request.Send(buff);
+                lb_Monitor.Items.Add(@"send > " + tb_Send.Text + " " + DateTime.Now.ToLongTimeString());
+                string answer = string.Empty;
+
+                byte[] back = new byte [ClientTcp.Request.ReceiveBufferSize];
+                ClientTcp.Request.Receive(back);
+                answer = Encoding.UTF8.GetString(back);
+                if (!string.IsNullOrEmpty(answer))
                 {
-                    Name = Id.Name,
-                    Guid = Id.ClientGuid.ToString(),
-                    MsgType = MsgType.CmdOther,
-                    Body = tb_Send.Text
-                };
-
-                string sendData = string.Empty;
-                stream = client.GetStream();
-                Byte[] data = System.Text.Encoding.UTF8.GetBytes(request.ToString());
-                stream.Write(data, 0, data.Length);
-
-
-
-                //BinaryFormatter formatter = new BinaryFormatter();
-
-                //formatter.Serialize(stream, request);
-                //Msg answer = (Msg) formatter.Deserialize(stream);
-
-                data = new Byte[1024];
-
-                // String to store the response ASCII representation.
-                String responseData = String.Empty;
-                if (stream.DataAvailable)
-                {
-                    // Read the first batch of the TcpServer response bytes.
-                    Int32 bytes = stream.Read(data, 0, data.Length);
-                    responseData = System.Text.Encoding.UTF8.GetString(data, 0, bytes);
-
-                    lb_Monitor.Items.Add(responseData);
+                    lb_Monitor.Items.Add(@"answer > " + answer + " " + DateTime.Now.ToLongTimeString());
                 }
             }
             catch (Exception exception)
@@ -114,5 +89,44 @@ namespace pe_0401_Client
                 MessageBox.Show(exception.Message);
             }
         }
+
+        private void LockUnlockControls(bool connect)
+        {
+            if (connect)
+            {
+                btn_Start.Enabled = false;
+                btn_Stop.Enabled = true;
+                gb_Connect.Enabled = false;
+                gb_Send.Enabled = true;
+                gb_Monitor.Enabled = true;
+            }
+            else
+            {
+                btn_Start.Enabled = true;
+                btn_Stop.Enabled = false;
+                gb_Connect.Enabled = true;
+                gb_Send.Enabled = false;
+                lb_Monitor.Items.Clear();
+                gb_Monitor.Enabled = false;
+            }
+        }
+
+        Task<string> GetAnswer()
+        {
+            return Task.Run(() =>
+            {
+                Socket s = ClientTcp.Listener.Accept();
+                
+                byte[] buff=new byte[s.ReceiveBufferSize];
+                int count = s.Receive(buff);
+                string get = Encoding.UTF8.GetString(buff, 0, count);
+                NetwMsg nm = new NetwMsg(get);
+               
+                s.Close();
+                
+                return nm.ToString();
+            });
+        }
+       
     }
 }

@@ -37,12 +37,12 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btn_Stop = new System.Windows.Forms.Button();
             this.btn_Start = new System.Windows.Forms.Button();
-            this.gbSend = new System.Windows.Forms.GroupBox();
+            this.gb_Send = new System.Windows.Forms.GroupBox();
             this.btn_Send = new System.Windows.Forms.Button();
             this.tb_Send = new System.Windows.Forms.TextBox();
             this.gb_Monitor.SuspendLayout();
             this.gb_Connect.SuspendLayout();
-            this.gbSend.SuspendLayout();
+            this.gb_Send.SuspendLayout();
             this.SuspendLayout();
             // 
             // gb_Monitor
@@ -59,6 +59,7 @@
             // lb_Monitor
             // 
             this.lb_Monitor.FormattingEnabled = true;
+            this.lb_Monitor.HorizontalScrollbar = true;
             this.lb_Monitor.Location = new System.Drawing.Point(7, 20);
             this.lb_Monitor.Name = "lb_Monitor";
             this.lb_Monitor.ScrollAlwaysVisible = true;
@@ -133,16 +134,16 @@
             this.btn_Start.UseVisualStyleBackColor = true;
             this.btn_Start.Click += new System.EventHandler(this.btn_Start_Click);
             // 
-            // gbSend
+            // gb_Send
             // 
-            this.gbSend.Controls.Add(this.btn_Send);
-            this.gbSend.Controls.Add(this.tb_Send);
-            this.gbSend.Location = new System.Drawing.Point(14, 98);
-            this.gbSend.Name = "gbSend";
-            this.gbSend.Size = new System.Drawing.Size(341, 51);
-            this.gbSend.TabIndex = 9;
-            this.gbSend.TabStop = false;
-            this.gbSend.Text = "Send to server";
+            this.gb_Send.Controls.Add(this.btn_Send);
+            this.gb_Send.Controls.Add(this.tb_Send);
+            this.gb_Send.Location = new System.Drawing.Point(14, 98);
+            this.gb_Send.Name = "gb_Send";
+            this.gb_Send.Size = new System.Drawing.Size(341, 51);
+            this.gb_Send.TabIndex = 9;
+            this.gb_Send.TabStop = false;
+            this.gb_Send.Text = "Send to server";
             // 
             // btn_Send
             // 
@@ -166,7 +167,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(369, 485);
-            this.Controls.Add(this.gbSend);
+            this.Controls.Add(this.gb_Send);
             this.Controls.Add(this.gb_Monitor);
             this.Controls.Add(this.gb_Connect);
             this.Controls.Add(this.btn_Stop);
@@ -176,8 +177,8 @@
             this.gb_Monitor.ResumeLayout(false);
             this.gb_Connect.ResumeLayout(false);
             this.gb_Connect.PerformLayout();
-            this.gbSend.ResumeLayout(false);
-            this.gbSend.PerformLayout();
+            this.gb_Send.ResumeLayout(false);
+            this.gb_Send.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -193,7 +194,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btn_Stop;
         private System.Windows.Forms.Button btn_Start;
-        private System.Windows.Forms.GroupBox gbSend;
+        private System.Windows.Forms.GroupBox gb_Send;
         private System.Windows.Forms.Button btn_Send;
         private System.Windows.Forms.TextBox tb_Send;
     }
