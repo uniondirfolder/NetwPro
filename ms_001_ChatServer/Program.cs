@@ -13,7 +13,7 @@ namespace ms_001_ChatServer
         public static Hashtable clientList = new Hashtable();
         static void Main(string[] args)
         {
-            TcpListener serverSocket = new TcpListener(8888);
+            TcpListener serverSocket = new TcpListener(10_000);
             TcpClient clientSocket = default(TcpClient);
             int counter = 0;
 
@@ -45,6 +45,7 @@ namespace ms_001_ChatServer
                 Console.WriteLine(dataFromClient + " Joined chat room ");
                 HandleClient client = new HandleClient();
                 client.StartClient(clientSocket,dataFromClient,clientList);
+                
             }
             clientSocket.Close();
             serverSocket.Stop();

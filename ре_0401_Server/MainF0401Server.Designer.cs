@@ -122,6 +122,7 @@
             // lb_Monitor
             // 
             this.lb_Monitor.FormattingEnabled = true;
+            this.lb_Monitor.HorizontalScrollbar = true;
             this.lb_Monitor.Location = new System.Drawing.Point(7, 20);
             this.lb_Monitor.Name = "lb_Monitor";
             this.lb_Monitor.ScrollAlwaysVisible = true;

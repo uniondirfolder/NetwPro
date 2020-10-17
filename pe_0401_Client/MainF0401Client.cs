@@ -74,7 +74,7 @@ namespace pe_0401_Client
         {
             try
             {
-                stream = client.GetStream();
+               
 
                 Msg request = new Msg
                 {
@@ -83,12 +83,31 @@ namespace pe_0401_Client
                     MsgType = MsgType.CmdOther,
                     Body = tb_Send.Text
                 };
-                BinaryFormatter formatter = new BinaryFormatter();
 
-                formatter.Serialize(stream, request);
-                Msg answer = (Msg) formatter.Deserialize(stream);
-                lb_Monitor.Items.Add(answer.ToString());
+                string sendData = string.Empty;
+                stream = client.GetStream();
+                Byte[] data = System.Text.Encoding.UTF8.GetBytes(request.ToString());
+                stream.Write(data, 0, data.Length);
 
+
+
+                //BinaryFormatter formatter = new BinaryFormatter();
+
+                //formatter.Serialize(stream, request);
+                //Msg answer = (Msg) formatter.Deserialize(stream);
+
+                data = new Byte[1024];
+
+                // String to store the response ASCII representation.
+                String responseData = String.Empty;
+                if (stream.DataAvailable)
+                {
+                    // Read the first batch of the TcpServer response bytes.
+                    Int32 bytes = stream.Read(data, 0, data.Length);
+                    responseData = System.Text.Encoding.UTF8.GetString(data, 0, bytes);
+
+                    lb_Monitor.Items.Add(responseData);
+                }
             }
             catch (Exception exception)
             {

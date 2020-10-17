@@ -33,6 +33,7 @@ namespace ре_0401_Server
             btn_Start.Enabled = false;
             btn_Stop.Enabled = true;
             thread = new Thread(new ThreadStart(ServerStart));
+            thread.IsBackground = true;
             thread.Start();
             CheckMessage();
         }
@@ -58,22 +59,17 @@ namespace ре_0401_Server
 
         void CheckMessage()
         {
-
-            Task.Run(() =>
+            while (true)
             {
-                while (checkMsg)
+                if (localMsg.haveMsg)
                 {
-                    Thread.Sleep(5000);
-                    if (localMsg.haveMsg)
-                    {
-                        Invoke(new Action(() =>
-
-                                this.lb_Monitor.Text = localMsg.msg
-                            )
-                        );
-                    }
+                    this.lb_Monitor.Items.Add(localMsg.msg);
+                    this.localMsg.msg = "";
+                    this.localMsg.haveMsg = false;
                 }
-            });
+                Thread.Sleep(1000);
+            }
+            
 
         }
     }

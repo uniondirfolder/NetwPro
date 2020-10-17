@@ -27,7 +27,7 @@ namespace ht_0301_ClientChat
         private string userName;
         public string UserName
         {
-            get { return userName; }
+            get => userName;
             set { userName = value; Title = userName; }
         }
         public MainWindow()

@@ -25,7 +25,7 @@ namespace dn_003_UdpServer
                 Console.WriteLine($"Sended: {time}");
                 byte[] msg = Encoding.UTF8.GetBytes(time);
                 socket.SendTo(msg, ep);
-                Thread.Sleep(10_000);
+                Thread.Sleep(1_000);
             }
         }
     }

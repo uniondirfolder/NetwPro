@@ -19,6 +19,7 @@ namespace ht_0401_LibraryNet
     {
         public bool haveMsg { get; set; } = false;
         public string msg { get; set; } = "NaN";
+
     }
 
     public class MadText
@@ -82,7 +83,8 @@ namespace ht_0401_LibraryNet
 
         public override string ToString()
         {
-            return $"ID: {Guid} | Client: {Name} | MT: {MsgType} | MSG: {Body}";
+            //return $"ID: {Guid} | Client: {Name} | MT: {MsgType} | MSG: {Body}";
+            return $"{Name} > MT: {MsgType} | MSG: {Body}";
         }
     }
 
@@ -125,6 +127,8 @@ namespace ht_0401_LibraryNet
 
                     BinaryFormatter formatter = new BinaryFormatter();
                     Msg request = (Msg)formatter.Deserialize(networkStream);
+                    localMsg.msg = request.ToString();
+                    localMsg.haveMsg = true;
 
                     Msg answer = new Msg();
 

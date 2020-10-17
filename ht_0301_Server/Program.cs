@@ -17,7 +17,7 @@ namespace ht_0301_Server
             IPAddress address = IPAddress.Loopback;
             int port = 10_000;
             socketServer.Bind(new IPEndPoint(address, port));
-            socketServer.Listen(10);
+            socketServer.Listen(1);
 
             Console.WriteLine("Server start work >");
 
