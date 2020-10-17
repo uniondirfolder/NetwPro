@@ -46,9 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MainF0401Client.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="MainF0401Client.cs" />
     <Compile Include="MainF0401Client.Designer.cs">
       <DependentUpon>MainF0401Client.cs</DependentUpon>
     </Compile>
@@ -78,12 +76,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ht_0401_LibraryNet\pe_0401_LibraryNet.csproj">
-      <Project>{b24bb554-e223-4911-b169-5b4980b7011e}</Project>
-      <Name>pe_0401_LibraryNet</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

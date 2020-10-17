@@ -79,15 +79,5 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ht_0401_LibraryNet\pe_0401_LibraryNet.csproj">
-      <Project>{B24BB554-E223-4911-B169-5B4980B7011E}</Project>
-      <Name>pe_0401_LibraryNet</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ht_LibraryNetPro\ht_LibraryNetPro.csproj">
-      <Project>{79a60e2b-cd5b-4e40-846d-4b4e2cb08da4}</Project>
-      <Name>ht_LibraryNetPro</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

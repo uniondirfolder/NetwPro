@@ -37,8 +37,14 @@
             this.gb_Connect = new System.Windows.Forms.GroupBox();
             this.gb_Monitor = new System.Windows.Forms.GroupBox();
             this.lb_Monitor = new System.Windows.Forms.ListBox();
+            this.gb_Connected = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.lbl_ip_cond = new System.Windows.Forms.Label();
+            this.lbl_port_cond = new System.Windows.Forms.Label();
             this.gb_Connect.SuspendLayout();
             this.gb_Monitor.SuspendLayout();
+            this.gb_Connected.SuspendLayout();
             this.SuspendLayout();
             // 
             // btn_Start
@@ -53,7 +59,6 @@
             // 
             // btn_Stop
             // 
-            this.btn_Stop.Enabled = false;
             this.btn_Stop.Location = new System.Drawing.Point(94, 13);
             this.btn_Stop.Name = "btn_Stop";
             this.btn_Stop.Size = new System.Drawing.Size(75, 23);
@@ -129,20 +134,70 @@
             this.lb_Monitor.Size = new System.Drawing.Size(328, 277);
             this.lb_Monitor.TabIndex = 0;
             // 
+            // gb_Connected
+            // 
+            this.gb_Connected.Controls.Add(this.lbl_port_cond);
+            this.gb_Connected.Controls.Add(this.lbl_ip_cond);
+            this.gb_Connected.Controls.Add(this.label3);
+            this.gb_Connected.Controls.Add(this.label4);
+            this.gb_Connected.Location = new System.Drawing.Point(175, 43);
+            this.gb_Connected.Name = "gb_Connected";
+            this.gb_Connected.Size = new System.Drawing.Size(156, 82);
+            this.gb_Connected.TabIndex = 5;
+            this.gb_Connected.TabStop = false;
+            this.gb_Connected.Text = "Connected";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(13, 22);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(17, 13);
+            this.label3.TabIndex = 1;
+            this.label3.Text = "IP";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(13, 48);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(26, 13);
+            this.label4.TabIndex = 1;
+            this.label4.Text = "Port";
+            // 
+            // lbl_ip_cond
+            // 
+            this.lbl_ip_cond.AutoSize = true;
+            this.lbl_ip_cond.Location = new System.Drawing.Point(51, 20);
+            this.lbl_ip_cond.Name = "lbl_ip_cond";
+            this.lbl_ip_cond.Size = new System.Drawing.Size(0, 13);
+            this.lbl_ip_cond.TabIndex = 2;
+            // 
+            // lbl_port_cond
+            // 
+            this.lbl_port_cond.AutoSize = true;
+            this.lbl_port_cond.Location = new System.Drawing.Point(51, 48);
+            this.lbl_port_cond.Name = "lbl_port_cond";
+            this.lbl_port_cond.Size = new System.Drawing.Size(0, 13);
+            this.lbl_port_cond.TabIndex = 2;
+            // 
             // MainF0401Server
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(367, 450);
+            this.Controls.Add(this.gb_Connected);
             this.Controls.Add(this.gb_Monitor);
             this.Controls.Add(this.gb_Connect);
             this.Controls.Add(this.btn_Stop);
             this.Controls.Add(this.btn_Start);
             this.Name = "MainF0401Server";
-            this.Text = "Form1";
+            this.Text = "Server";
             this.gb_Connect.ResumeLayout(false);
             this.gb_Connect.PerformLayout();
             this.gb_Monitor.ResumeLayout(false);
+            this.gb_Connected.ResumeLayout(false);
+            this.gb_Connected.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -158,6 +213,11 @@
         private System.Windows.Forms.GroupBox gb_Connect;
         private System.Windows.Forms.GroupBox gb_Monitor;
         private System.Windows.Forms.ListBox lb_Monitor;
+        private System.Windows.Forms.GroupBox gb_Connected;
+        private System.Windows.Forms.Label lbl_port_cond;
+        private System.Windows.Forms.Label lbl_ip_cond;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
     }
 }
 
