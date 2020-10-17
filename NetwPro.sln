@@ -89,7 +89,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ht_0301_ServerChat", "ht_03
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ht_0301_ClientChat", "ht_0301_ClientChat\ht_0301_ClientChat.csproj", "{ADA6B401-11DB-4CBE-83AD-C8B4FD98AF78}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pe_0401_LibraryNet", "ht_0401_LibraryNet\pe_0401_LibraryNet.csproj", "{B24BB554-E223-4911-B169-5B4980B7011E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyLibrary", "ht_0401_LibraryNet\MyLibrary.csproj", "{B24BB554-E223-4911-B169-5B4980B7011E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ре_0401_Server", "ре_0401_Server\ре_0401_Server.csproj", "{216DA967-2DA3-433A-B7C2-1E8FB588A812}"
 EndProject
